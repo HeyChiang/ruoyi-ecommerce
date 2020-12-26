@@ -28,6 +28,8 @@ export default {
   methods: {
     linkProps(to) {
       if (this.isExternal) {
+        //为了防止window.opener被滥用，在使用targrt=_blank时需要加上rel=noopener
+        //window.opener可以进行源窗口DOM的访问。window.open打开的iframe窗口一样。
         return {
           href: to,
           target: '_blank',

@@ -73,6 +73,13 @@
             <artifactId>ruoyi-generator</artifactId>
         </dependency>
 
+        <!-- 电子商务模块-->
+        <dependency>
+            <groupId>com.ruoyi</groupId>
+            <artifactId>ruiyi-ecommerce</artifactId>
+            <version>${ruoyi.version}</version>
+        </dependency>
+
     </dependencies>
 
     <build>

@@ -9,8 +9,10 @@ NProgress.configure({ showSpinner: false })
 
 const whiteList = ['/login', '/auth-redirect', '/bind', '/register']
 
+// 拦截所有跳转，若跳转的页面没有权限或需要登录，这给出相应的页面。
 router.beforeEach((to, from, next) => {
-  NProgress.start()
+  // 显示进度条，只是为了减轻用户的焦虑。开始之后就慢慢的往前跑，不根据程序的运行而判定。
+  NProgress.start() 
   if (getToken()) {
     /* has token*/
     if (to.path === '/login') {
@@ -18,7 +20,7 @@ router.beforeEach((to, from, next) => {
       NProgress.done()
     } else {
       if (store.getters.roles.length === 0) {
-        // 判断当前用户是否已拉取完user_info信息
+         // 通过store获取用户信息并储存，然后回调
         store.dispatch('GetInfo').then(res => {
           // 拉取user_info
           const roles = res.roles

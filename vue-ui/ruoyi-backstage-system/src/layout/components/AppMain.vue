@@ -24,7 +24,9 @@ export default {
 
 <style lang="scss" scoped>
 .app-main {
-  /* 50= navbar  50  */
+   /* 50= navbar  50  
+      vh：1vh等于视口高度的1%， calc保证窗口缩放的时候尺寸会一起缩放
+   */
   min-height: calc(100vh - 50px);
   width: 100%;
   position: relative;

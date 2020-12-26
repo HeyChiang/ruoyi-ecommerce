@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.ecommerce.mapper.ProductMapper">
+    
+    <resultMap type="Product" id="ProductResult">
+        <result property="pkId"    column="pk_id"    />
+        <result property="title"    column="title"    />
+        <result property="originalPrice"    column="original_price"    />
+        <result property="salePrice"    column="sale_price"    />
+        <result property="stock"    column="stock"    />
+        <result property="des"    column="des"    />
+        <result property="imageUrls"    column="image_urls"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectProductVo">
+        select pk_id, title, original_price, sale_price, stock, des, image_urls, create_time, update_time from ec_product
+    </sql>
+
+    <select id="selectProductList" parameterType="Product" resultMap="ProductResult">
+        <include refid="selectProductVo"/>
+        <where>  
+            <if test="title != null  and title != ''"> and title = #{title}</if>
+            <if test="originalPrice != null "> and original_price = #{originalPrice}</if>
+            <if test="salePrice != null "> and sale_price = #{salePrice}</if>
+            <if test="stock != null "> and stock = #{stock}</if>
+            <if test="des != null  and des != ''"> and des = #{des}</if>
+            <if test="imageUrls != null  and imageUrls != ''"> and image_urls = #{imageUrls}</if>
+        </where>
+    </select>
+    
+    <select id="selectProductById" parameterType="Long" resultMap="ProductResult">
+        <include refid="selectProductVo"/>
+        where pk_id = #{pkId}
+    </select>
+        
+    <insert id="insertProduct" parameterType="Product" useGeneratedKeys="true" keyProperty="pkId">
+        insert into product
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="title != null and title != ''">title,</if>
+            <if test="originalPrice != null">original_price,</if>
+            <if test="salePrice != null">sale_price,</if>
+            <if test="stock != null">stock,</if>
+            <if test="des != null">des,</if>
+            <if test="imageUrls != null and imageUrls != ''">image_urls,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="title != null and title != ''">#{title},</if>
+            <if test="originalPrice != null">#{originalPrice},</if>
+            <if test="salePrice != null">#{salePrice},</if>
+            <if test="stock != null">#{stock},</if>
+            <if test="des != null">#{des},</if>
+            <if test="imageUrls != null and imageUrls != ''">#{imageUrls},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateProduct" parameterType="Product">
+        update product
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="title != null and title != ''">title = #{title},</if>
+            <if test="originalPrice != null">original_price = #{originalPrice},</if>
+            <if test="salePrice != null">sale_price = #{salePrice},</if>
+            <if test="stock != null">stock = #{stock},</if>
+            <if test="des != null">des = #{des},</if>
+            <if test="imageUrls != null and imageUrls != ''">image_urls = #{imageUrls},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where pk_id = #{pkId}
+    </update>
+
+    <delete id="deleteProductById" parameterType="Long">
+        delete from ec_product where pk_id = #{pkId}
+    </delete>
+
+    <delete id="deleteProductByIds" parameterType="String">
+        delete from ec_product where pk_id in
+        <foreach item="pkId" collection="array" open="(" separator="," close=")">
+            #{pkId}
+        </foreach>
+    </delete>
+    
+</mapper>
